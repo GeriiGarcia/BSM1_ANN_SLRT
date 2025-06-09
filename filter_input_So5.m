@@ -1,0 +1,56 @@
+function [output_signal] = filter_input_So5(input_signal, Ts)
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+dims_input = size(input_signal(:,2));
+
+signal_len = dims_input(1);
+
+if signal_len == 1344
+    switch Ts
+        case 4/96
+            filter_square = [ones(300,1); zeros(signal_len-300*2,1); ones(300,1)];
+        case 16/96
+            filter_square = [ones(300,1); zeros(signal_len-300*2,1); ones(300,1)];
+        case 2
+    
+            filter_square = [ones(200,1); zeros(signal_len-200*2,1); ones(200,1)];
+    end
+
+else
+    switch Ts
+        case 4/96
+            filter_square = [ones(8000,1); zeros(signal_len-8000*2,1);...
+        ones(8000,1)];
+        case 16/96
+            filter_square = [ones(2000,1); zeros(signal_len-2000*2,1);...
+        ones(2000,1)];
+        case 1
+            filter_square = [ones(1681,1); zeros(signal_len-1681*2,1); ones(1681,1)];
+        case 2
+            filter_square = [ones(841,1); zeros(signal_len-841*2,1); ones(841,1)];
+        case 4
+            filter_square = [ones(420,1); zeros(signal_len-420*2,1); ones(420,1)];
+    end
+
+end
+
+fft_input = fft(input_signal(:,2));
+filtered_signal = fft_input.*filter_square;
+output_signal_value = real(ifft(filtered_signal));
+
+if signal_len == 1344
+    output_signal_time = 0:1/96:(14-1/96);
+    
+else
+    output_signal_time = 0:1/96:(1680-1/96);
+end
+
+min_len = min(length(output_signal_time), length(output_signal_value));
+output_signal = [output_signal_time(1:min_len)' output_signal_value(1:min_len)];
+
+
+% output_signal = [output_signal_time' output_signal_value];
+
+
+end
+
