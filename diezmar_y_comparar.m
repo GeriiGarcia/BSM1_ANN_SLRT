@@ -20,6 +20,9 @@ else
     Q_no_inter = Q_no_inter_ts;
 end
 
+% Extraer tiempo y señal de Q_inter
+Q_inter_time = Q_inter(:,1);
+Q_inter_signal = Q_inter(:,2);
 
 % Diezmar la señal por 15
 Q_inter_signal_diezmado = Q_inter_signal(1:15:end);
@@ -76,14 +79,22 @@ Q_no_inter_norm(:,2) = (Q_no_inter(:,2) - min(Q_no_inter(:,2))) / (max(Q_no_inte
 %%
 
 figure;
-diff_norm = Q_inter_diezmado_norm(:,2) - Q_no_inter_norm(:,2);
+diff_norm = abs(Q_inter_diezmado_norm(:,2) - Q_no_inter_norm(:,2));
+
 plot(Q_inter_diezmado_norm(:,1), diff_norm, 'b', 'DisplayName', 'Diff');
-title('Diferencia señales (diezmadas y normalizadas)');
-xlabel('Tiempo');
-ylabel('Diferencia');
+hold on;
+
+% Calcular y graficar la media de la diferencia
+media_diff = mean(diff_norm);
+yline(media_diff, 'g--', 'LineWidth', 2, 'DisplayName', 'Mean Diff');
+
+title('Differentiate signals (decimated and normalized)');
+xlabel('Time (seconds)');
+ylabel('Difference');
 legend;
 grid on;
 drawnow;
+
 
 
 

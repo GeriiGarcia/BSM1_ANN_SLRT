@@ -29,10 +29,15 @@ SampleTime = 0.0001;
 
 
 %%
+TiQintr = 0.025*15*1.5; %reginit
+TiSO5 = 0.002*15*1.5; %reginit.m    %I-part time constant (d = 2.88 min)), integral time constant, 0.001 in BSM1 book
+
+
+
 
 
 set_param('benchmark_ivan_PIANN_interpolated_slrt', 'FixedStep', '0.0001') 
-%set_param('benchmark_ivan_PIANN_Performance_plot', 'FixedStep', '0.0001') 
+% set_param('benchmark_ivan_PIANN_Performance_plot_disc', 'FixedStep', '0.0001') 
 
 % Define target si no existe
 tg = slrealtime('TargetPC1');
@@ -48,8 +53,8 @@ connect(tg);
 rtwbuild('benchmark_ivan_PIANN_interpolated_slrt')                 % compilar para Speedgoat
 load(tg, 'benchmark_ivan_PIANN_interpolated_slrt');
 
-% rtwbuild('benchmark_ivan_PIANN_Performance_plot') 
-% load(tg, 'benchmark_ivan_PIANN_Performance_plot');
+% rtwbuild('benchmark_ivan_PIANN_Performance_plot_disc') 
+% load(tg, 'benchmark_ivan_PIANN_Performance_plot_disc');
 start(tg);
 
 
